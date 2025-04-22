@@ -1,0 +1,1 @@
+SECRET_KEY = 'internet_shop_digispark_25'
