@@ -10,6 +10,19 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-<h1>DigiSpark</h1>
+<div class="flex-contain">
+    <img class="emblem" src="static/images/icon1.png">
+    <h1>DigiSpark</h1>
+    <div class="main-menu">
+        <a href="/a">Info</a>
+        <a href="/b">Shop</a>
+        <a href="">Contacts</a>
+    </div>
+    <div class="main_buttons">
+        <a class="btn btn-primary" href="/login">Log in</a>
+        <a class="btn btn-success" href="/register">Register</a>
+    </div>
+</div>
+{% block content %}{% endblock %}
 </body>
 </html>

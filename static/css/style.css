@@ -1,10 +1,43 @@
 h1 {
     color: #1E90FF;
     font-family: Impact, fantasy;
-    font-size: 100px;
-    padding-left: 50px;
+    font-size: 60px;
+    padding-left: 30px;
 }
 
-body {
-    background-image: url("C://Users//mamet//PycharmProjects//DigiSpark//static//images//icon1.png");
+.emblem {
+    width: 50px;
+    height: 50px;
+    float: left;
+    margin-left: 40px
+}
+
+.flex-contain {
+    display: flex;
+    align-items: center;
+    background-color: #333;
+    padding: 10px;
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    z-index: 100;
+}
+
+.main-menu a {
+    color: red;
+    text-decoration: none;
+    font-size: 50px;
+    font-family: Impact, fantasy;
+    margin-left: 180px;
+    text-align: center
+}
+
+.main_buttons {
+    display: flex;
+    align-items: center;
+    margin-left: 380px;
+}
+
+.btn-success {
+    margin-left: 40px;
 }
