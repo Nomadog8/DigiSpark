@@ -15,6 +15,15 @@
         {% endfor %}
     </p>
     <p>
+        {{ form.phone_number.label }}<br>
+        {{ form.phone_number(class="form-control") }}<br>
+        {% for error in form.phone_number.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>
         {{ form.password.label }}<br>
         {{ form.password(class="form-control", type="password") }}<br>
         {% for error in form.password.errors %}

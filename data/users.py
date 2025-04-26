@@ -13,6 +13,7 @@ class User(SqlAlchemyBase):
     surname = sqlalchemy.Column(sqlalchemy.String)
     age = sqlalchemy.Column(sqlalchemy.Integer)
     email = sqlalchemy.Column(sqlalchemy.String, index=True, unique=True)
+    phone_number = sqlalchemy.Column(sqlalchemy.String, unique=True)
     hashed_password = sqlalchemy.Column(sqlalchemy.String)
 
     def set_password(self, password):

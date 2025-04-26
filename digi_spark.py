@@ -10,7 +10,7 @@ app.config.from_pyfile('config.py')
 
 
 def start_app():
-    db_session.global_init('db/Clients.db')
+    db_session.global_init('db/Clients.sqlite')
     app.run(host='127.0.0.1', port=5000)
 
 
@@ -25,10 +25,6 @@ def register():
 
     if form.validate_on_submit():
 
-        if form.password.data != form.password_again.data:
-            return render_template('register.html', title='Регистрация', form=form,
-                                   message='Введённые пароли не совпадают')
-
         db_sess = db_session.create_session()
 
         if db_sess.query(User).filter(User.email == form.email.data).first():
@@ -39,7 +35,8 @@ def register():
             email=form.email.data,
             name=form.name.data,
             surname=form.surname.data,
-            age=form.age.data
+            age=form.age.data,
+            phone_number=form.phone_number.data
         )
 
         user.set_password(form.password.data)
