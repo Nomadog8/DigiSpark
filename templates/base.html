@@ -8,21 +8,26 @@
     integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
     crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block head %}{% endblock %}
 </head>
 <body>
-<div class="flex-contain">
-    <img class="emblem" src="static/images/icon1.png">
-    <h1>DigiSpark</h1>
-    <div class="main-menu">
-        <a href="/a">Info</a>
-        <a href="/b">Shop</a>
-        <a href="">Contacts</a>
+<header class="fixed-header">
+    <div class="flex-contain">
+        <img class="emblem" src="static/images/icon1.png">
+        <h1>DigiSpark</h1>
+        <div class="main-menu">
+            <a href="/a">Info</a>
+            <a href="/b">Shop</a>
+            <a href="/contacts">Contacts</a>
+        </div>
+        <div class="main_buttons">
+            <a class="btn btn-primary" href="/login">Log in</a>
+            <a class="btn btn-success" href="/register">Register</a>
+        </div>
     </div>
-    <div class="main_buttons">
-        <a class="btn btn-primary" href="/login">Log in</a>
-        <a class="btn btn-success" href="/register">Register</a>
-    </div>
-</div>
-{% block content %}{% endblock %}
+</header>
+<main class="content-wrapper">
+    {% block content %}{% endblock %}
+</main>
 </body>
 </html>

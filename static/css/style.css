@@ -53,3 +53,16 @@ h1 {
     padding-top: 100px;
     padding-left: 400px;
 }
+
+.fixed-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.content-wrapper {
+    margin-top: 120px;
+    padding: 20px;
+}

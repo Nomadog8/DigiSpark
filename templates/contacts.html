@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block head %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_contacts.css') }}">
+{% endblock %}
+{% block content %}
+<div class="contact-container">
+    <h1 class="text-center mb-5">Contact Us</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="contact-info">
+                <h3 class="mb-4">Our Information</h3>
+                
+                <div class="contact-card">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-geo-alt-fill contact-icon"></i>
+                        <h5>Address</h5>
+                    </div>
+                    <p class="ms-4">Moscow</p>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-telephone-fill contact-icon"></i>
+                        <h5>Phone</h5>
+                    </div>
+                    <p class="ms-4">+7 (922) 423 37 45</p>
+                    <p class="ms-4">+7 (991) 524 43 21 (Support)</p>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-envelope-fill contact-icon"></i>
+                        <h5>Email</h5>
+                    </div>
+                    <p class="ms-4">timofei50200@gmail.com</p>
+                    <p class="ms-4">support@digispark.com</p>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-clock-fill contact-icon"></i>
+                        <h5>Working Hours</h5>
+                    </div>
+                    <p class="ms-4">Monday-Friday: 9:00 AM - 7:00 PM</p>
+                    <p class="ms-4">Saturday: 10:00 AM - 5:00 PM</p>
+                    <p class="ms-4">Sunday: Closed</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="contact-form">
+                <h3 class="form-title">Send us a message</h3>
+                <form method="POST" action="/submit_contact">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Your Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="subject" class="form-label">Subject</label>
+                        <select class="form-select" id="subject" name="subject">
+                            <option value="cooperation">Cooperation</option>
+                            <option value="development_assistance">Development assistance</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+            
+            <div class="mt-4">
+                <h4>Follow Us</h4>
+                <div class="d-flex mt-3">
+                    <a href="#" class="btn btn-outline-primary me-2"><i class="bi bi-telegram"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

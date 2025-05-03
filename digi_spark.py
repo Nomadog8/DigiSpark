@@ -1,10 +1,11 @@
 from flask import Flask, render_template, redirect
-from flask_restful import reqparse, Api, Resource
 from flask_login import login_user, login_required, logout_user, LoginManager
+from flask_restful import Api
 
 from data import db_session
-from forms.user import RegisterForm, LoginForm
 from data.users import User
+from forms.user import RegisterForm, LoginForm
+from flask import request
 
 app = Flask(__name__)
 api = Api(app)
@@ -37,6 +38,20 @@ def first_page():
     return render_template('base.html')
 
 
+@app.route('/contacts')
+def contacts():
+    return render_template('contacts.html')
+
+
+@app.route('/submit_contact', methods=['POST'])
+def submit_contact():
+    name = request.form.get('name')
+    email = request.form.get('email')
+    subject = request.form.get('subject')
+    message = request.form.get('message')
+    return redirect('/contacts')
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
@@ -67,7 +82,6 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-
     form = LoginForm()
 
     if form.validate_on_submit():
@@ -82,7 +96,6 @@ def login():
         return render_template('login.html', message='Неправильный логин или пароль', form=form)
 
     return render_template('login.html', title='Авторизация', form=form)
-
 
 
 if __name__ == '__main__':
