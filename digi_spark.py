@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect
-from flask_login import login_user, login_required, logout_user, LoginManager
+from flask_login import login_user, login_required, logout_user, LoginManager, current_user
 from flask_restful import Api
 
 from data import db_session
