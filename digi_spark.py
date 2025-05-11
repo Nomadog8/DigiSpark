@@ -33,6 +33,11 @@ def start_app():
     app.run(host='127.0.0.1', port=5000)
 
 
+def check_telephone_number(number):
+
+    return sum(1 for k in number if k in '0123456789')
+
+
 @app.route('/')
 def first_page():
     return render_template('base.html')
@@ -63,6 +68,22 @@ def register():
         if db_sess.query(User).filter(User.email == form.email.data).first():
             return render_template('register.html', title='Регистрация', form=form,
                                    message='Пользователь с такой почтой уже зарегестрирован')
+
+        if check_telephone_number(form.phone_number.data) != 11:
+            return render_template('register.html', title='Регистрация', form=form,
+                                   message='Неправильно набранный номер')
+
+        if len(form.password.data.strip()) < 9:
+            return render_template('register.html', title='Регистрация', form=form,
+                                   message='Пароль должен содержать не менее 9 символов')
+
+        if form.password.data.strip().isdigit():
+            return render_template('register.html', title='Регистрация', form=form,
+                                   message='Пароль должен содержать буквы')
+
+        if form.password.data.strip().isalpha():
+            return render_template('register.html', title='Регистрация', form=form,
+                            message='Пароль должен содержать цифры')
 
         user = User(
             email=form.email.data,
