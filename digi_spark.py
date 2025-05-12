@@ -4,6 +4,7 @@ from flask_restful import Api
 
 from data import db_session
 from data.users import User
+from data.contacts import Contacts
 from forms.user import RegisterForm, LoginForm
 from flask import request
 
@@ -54,6 +55,15 @@ def submit_contact():
     email = request.form.get('email')
     subject = request.form.get('subject')
     message = request.form.get('message')
+    db_sess = db_session.create_session()
+    contact = Contacts(
+        name=name,
+        email=email,
+        subject=subject,
+        message=message,
+    )
+    db_sess.add(contact)
+    db_sess.commit()
     return redirect('/contacts')
 
 
