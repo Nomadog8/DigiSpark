@@ -40,7 +40,12 @@ def check_telephone_number(number):
 
 @app.route('/')
 def first_page():
-    return render_template('base.html')
+    return render_template('home_first.html')
+
+
+@app.route('/radio')
+def second_page():
+    return render_template('home_second.html')
 
 
 @app.route('/info')
