@@ -1,12 +1,12 @@
 from flask import Flask, render_template, redirect
-from flask_login import login_user, login_required, logout_user, LoginManager, current_user
+from flask import request
+from flask_login import login_user, login_required, logout_user, LoginManager
 from flask_restful import Api
 
 from data import db_session
-from data.users import User
 from data.contacts import Contacts
+from data.users import User
 from forms.user import RegisterForm, LoginForm
-from flask import request
 
 app = Flask(__name__)
 api = Api(app)
@@ -35,13 +35,17 @@ def start_app():
 
 
 def check_telephone_number(number):
-
     return sum(1 for k in number if k in '0123456789')
 
 
 @app.route('/')
 def first_page():
     return render_template('base.html')
+
+
+@app.route('/info')
+def info():
+    return render_template('info.html')
 
 
 @app.route('/contacts')
@@ -93,7 +97,7 @@ def register():
 
         if form.password.data.strip().isalpha():
             return render_template('register.html', title='Регистрация', form=form,
-                            message='Пароль должен содержать цифры')
+                                   message='Пароль должен содержать цифры')
 
         user = User(
             email=form.email.data,
