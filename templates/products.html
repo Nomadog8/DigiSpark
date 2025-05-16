@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <h1>{{ kind }}</h1>
+        <div class="string">
+            {% for ind, kind, name, price in products %}
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ name }}</h5>
+                            <p class="card-text">Цена: {{ price }} руб.</p>
+                            <a href="/add/{{ ind }}" class="btn btn-primary">Добавить в корзину</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

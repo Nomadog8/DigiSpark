@@ -1,15 +1,16 @@
 from flask import Flask, render_template, redirect
 from flask import request
-from flask_login import login_user, login_required, logout_user, LoginManager
-from flask_restful import Api
+from flask_login import login_user, login_required, logout_user, LoginManager, current_user
+import sqlite3
 
-from data import db_session
+from data import db_session, cards_api, procc_api, bp_api, disk_api, culler_api, ram_api, board_api, keyboards, \
+    case_mon, solids_api
 from data.contacts import Contacts
 from data.users import User
+from data.orders import Order
 from forms.user import RegisterForm, LoginForm
 
 app = Flask(__name__)
-api = Api(app)
 app.config.from_pyfile('config.py')
 
 login_manager = LoginManager()
@@ -31,6 +32,16 @@ def logout():
 
 def start_app():
     db_session.global_init('db/Clients.sqlite')
+    app.register_blueprint(cards_api.blueprint)
+    app.register_blueprint(culler_api.blueprint)
+    app.register_blueprint(procc_api.blueprint)
+    app.register_blueprint(bp_api.blueprint)
+    app.register_blueprint(ram_api.blueprint)
+    app.register_blueprint(disk_api.blueprint)
+    app.register_blueprint(board_api.blueprint)
+    app.register_blueprint(case_mon.blueprint)
+    app.register_blueprint(keyboards.blueprint)
+    app.register_blueprint(solids_api.blueprint)
     app.run(host='127.0.0.1', port=5000)
 
 
@@ -56,6 +67,34 @@ def info():
 @app.route('/contacts')
 def contacts():
     return render_template('contacts.html')
+
+
+@app.errorhandler(401)
+def error_401(error):
+    return render_template('error401.html')
+
+
+@app.route('/empty')
+def empty():
+    return render_template('empty.html')
+
+
+@app.route('/add/<product_id>')
+@login_required
+def add_to_basket(product_id):
+    db_sess = db_session.create_session()
+
+    user = db_sess.query(User).filter(User.id == current_user.id).first()
+
+    if not user.basket:
+        user.basket = str(product_id)
+    else:
+        user.basket += f', {product_id}'
+
+    db_sess.commit()
+
+    return redirect('/')
+
 
 
 @app.route('/submit_contact', methods=['POST'])
@@ -104,6 +143,10 @@ def register():
             return render_template('register.html', title='Регистрация', form=form,
                                    message='Пароль должен содержать цифры')
 
+        if not (100 >= form.age.data >= 7):
+            return render_template('register.html', title='Регистрация', form=form,
+                                   message='Неверно указан возраст')
+
         user = User(
             email=form.email.data,
             name=form.name.data,
@@ -136,6 +179,80 @@ def login():
         return render_template('login.html', message='Неправильный логин или пароль', form=form)
 
     return render_template('login.html', title='Авторизация', form=form)
+
+
+@app.route('/basket')
+def basket():
+    db_sess = db_session.create_session()
+
+    user = db_sess.query(User).filter(User.id == current_user.id).first().basket
+
+    if user:
+
+        cur = sqlite3.connect('db/Clients.sqlite').cursor()
+
+        current_basket = []
+
+        for k in list(map(int, user.split(', '))):
+            prod = list(cur.execute('SELECT * FROM pc WHERE id = ?', (k,)).fetchone())
+
+            prod.append(user.split(', ').count(str(k)))
+
+            current_basket.append(prod)
+
+        total_price = sum(k[-2] for k in current_basket)
+
+        current_basket = [tuple(k) for k in current_basket]
+
+        return render_template('basket.html', total=total_price, basket=set(current_basket))
+
+    else:
+        return render_template('empty_basket.html')
+
+
+@app.route('/delete/<product_id>')
+def delete_from_basket(product_id):
+    db_sess = db_session.create_session()
+
+    user = db_sess.query(User).filter(User.id == current_user.id).first()
+    basket_r = user.basket.split(', ')
+    print(product_id)
+
+    basket_r.remove(str(product_id))
+
+    user.basket = ', '.join(basket_r)
+
+    db_sess.commit()
+
+    return redirect('/basket')
+
+
+@app.route('/order')
+def make_order():
+    db_sess = db_session.create_session()
+
+    user = db_sess.query(User).filter(User.id == current_user.id).first().basket
+
+    cur = sqlite3.connect('db/Clients.sqlite').cursor()
+
+    current_basket = []
+
+    for k in list(map(int, user.split(', '))):
+        prod = cur.execute('SELECT * FROM pc WHERE id = ?', (k,)).fetchone()
+
+        current_basket.append(prod[2])
+
+    current_basket = ', '.join(current_basket)
+
+    order = Order(
+        order=current_basket,
+        user_id=current_user.id,
+    )
+
+    db_sess.add(order)
+    db_sess.commit()
+
+    return redirect('/basket')
 
 
 if __name__ == '__main__':

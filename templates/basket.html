@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <h1>Мои товары:</h1>
+        <p></p>
+        <div class="string">
+            {% for ind, kind, name, price, am in basket %}
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ kind }} {{ name }}</h5>
+                            <p class="card-text">Цена: {{ price }} руб.</p>
+                            <p class="card-text">Количество: {{ am }}</p>
+                            <a href="/delete/{{ ind }}" class="btn btn-danger">Удалить</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <br />
+        <h2>Общая стоимость: {{ total }} руб.</h2>
+        <br />
+        <a href="/order" class="btn btn-warning">Оформить заказ</a>
+    </div>
+{% endblock %}

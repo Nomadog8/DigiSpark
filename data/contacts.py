@@ -1,9 +1,8 @@
 import sqlalchemy
 from .db_session import SqlAlchemyBase
-from flask_login import UserMixin
 
 
-class Contacts(SqlAlchemyBase, UserMixin):
+class Contacts(SqlAlchemyBase):
 
     __tablename__ = 'contacts'
 
